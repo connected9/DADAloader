@@ -79,10 +79,12 @@ def _is_safe_save_path(save_path: str) -> bool:
 class AddDownloadDialog(tk.Toplevel):
     """
     Dialog for adding a new download. Validates URL and save path, and sanitizes filename.
+    Connects to the main window to add the download if valid.
     """
     def __init__(self, parent):
-        """Initialize the dialog window."""
+        """Initialize the add download dialog window."""
         super().__init__(parent)
+        self.parent = parent
         self.title("Add New Download")
         self.geometry("400x200")
         self.resizable(False, False)
@@ -92,7 +94,7 @@ class AddDownloadDialog(tk.Toplevel):
         ttk.Button(self, text="Add Download", command=self._add_download).pack(pady=10)
 
     def _add_download(self):
-        """Validate input and add the download if valid."""
+        """Validate input and add the download if valid, else show error."""
         url = self.url_var.get()
         if not _is_valid_url(url):
             logging.warning(f"Invalid or unsupported URL: {url}")
@@ -136,7 +138,19 @@ class FileInfoDialog(tk.Toplevel):
         self.parent = parent
         self.download_id = download_id
         self.download_item = download_item
-        # ... (rest of dialog setup and logic, add docstrings to all methods) ...
+        # Setup UI elements (labels, progress bar, etc.)
+        # ...
+
+    def update_info(self):
+        """Update the displayed information with the latest download status."""
+        # Fetch latest info from parent/main window
+        # Update UI widgets accordingly
+        # ...
+
+    def on_close(self):
+        """Handle dialog close event and notify parent window if needed."""
+        # Clean up resources, notify parent, and destroy dialog
+        # ...
 
 
 # --- Database Management Logic ---
