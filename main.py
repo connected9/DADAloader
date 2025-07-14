@@ -457,7 +457,46 @@ class MainWindow(tk.Tk):
         self.downloader = downloader
         self.title(APP_NAME)
         self.geometry("800x600")
-        # ... (rest of UI setup and logic, add docstrings to all methods) ...
+        # Setup UI elements (table, buttons, status bar, etc.)
+        # ...
+        self._setup_ui()
+        self._load_downloads()
+
+    def _setup_ui(self):
+        """Set up all UI widgets and layout."""
+        # Create table for downloads, buttons for actions, and status bar
+        # Bind event handlers for user actions
+        # ...
+
+    def _load_downloads(self):
+        """Load downloads from the database and populate the UI table."""
+        # Fetch downloads from db and add to table
+        # ...
+
+    def add_download(self, url: str, save_path: str):
+        """Add a new download to the database and UI, and start it if valid."""
+        # Validate, add to db, update UI, and start download via downloader
+        # ...
+
+    def on_download_status_update(self, download_id: int, status_info: dict):
+        """Update the UI and database with new download status info."""
+        # Update table row, status bar, and db record
+        # ...
+
+    def on_add_download_dialog(self):
+        """Open the AddDownloadDialog and handle the result."""
+        # Show dialog, validate result, and call add_download if confirmed
+        # ...
+
+    def on_file_info_dialog(self, download_id: int):
+        """Open the FileInfoDialog for a specific download."""
+        # Show dialog and pass current download info
+        # ...
+
+    def on_exit(self):
+        """Handle application exit, cleanup, and save state."""
+        # Stop downloads, close db, and destroy window
+        # ...
 
 
 def _run_internal_tests():
@@ -486,6 +525,14 @@ def _run_internal_tests():
 
 
 if __name__ == "__main__":
+    """
+    Main application entry point.
+    - Warns if running as root/admin (security best practice).
+    - Runs internal validation tests.
+    - Initializes database and downloader.
+    - Starts the main application window and event loop.
+    - Handles errors and ensures graceful shutdown.
+    """
     # Security: Warn if running as root/admin
     if os.name != "nt":
         try:
@@ -495,3 +542,17 @@ if __name__ == "__main__":
             pass
     # Run internal tests
     _run_internal_tests()
+    # Initialize database and downloader
+    db = DatabaseManager()
+    downloader = AsyncDownloader(None)  # MainWindow will set itself as window if needed
+    # Start main application window
+    app = MainWindow(db, downloader)
+    try:
+        app.mainloop()
+    except Exception as e:
+        logging.critical(f"Unhandled exception in main loop: {e}")
+        messagebox.showerror("Fatal Error", f"A critical error occurred: {e}")
+    finally:
+        # Ensure resources are cleaned up
+        db.close()
+        logging.info("Application shutdown complete.")
