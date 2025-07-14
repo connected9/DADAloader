@@ -124,6 +124,21 @@ class AddDownloadDialog(tk.Toplevel):
             return f"download_{int(time.time())}"
 
 
+# --- Dialogs and UI Components ---
+class FileInfoDialog(tk.Toplevel):
+    """
+    Dialog for displaying detailed information about a specific download.
+    Connects to the main window to update or display download status.
+    """
+    def __init__(self, parent, download_id: int, download_item):
+        """Initialize the file info dialog with download details."""
+        super().__init__(parent)
+        self.parent = parent
+        self.download_id = download_id
+        self.download_item = download_item
+        # ... (rest of dialog setup and logic, add docstrings to all methods) ...
+
+
 # --- Database Management Logic ---
 class DatabaseManager:
     """
